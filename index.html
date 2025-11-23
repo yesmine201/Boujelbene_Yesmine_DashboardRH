@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard RH</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="navigation">
+      <ul>
+        <li class="brand">
+          <span class="logo"><img src="images/NovaQuest.png" alt="agences de voyages logo"></span>
+          <span class="titre"><h2>NovaQuest</h2></span>
+        </li>
+        <li>
+          <a href="#aperçu"><span>Page principale</span></a>
+        </li>
+        <li>
+          <a href="#employés">Employés</a>
+        </li>
+        <li>
+          <a href="#congés">Congés</a>
+        </li>
+        <li>
+          <a href="#taches">Taches</a>
+        </li>
+        <li>
+          <a href="#performance">Performances</a>
+        </li>
+      </ul>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div class="menu-toggle" role="button" aria-label="Toggle navigation">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </div>
+        <div class="header">
+          <h1>Agence de Voyages-Dashbord RH</h1>
+          <p class="sous-titre">Gestion des employés-Suivi des congés, des taches et des performances</p>
+        </div>
+        <div class="search-bar">
+          <label>
+            <input type="text" placeholder="rechercher ici">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </label>
+        </div>
+      </div>
+
+      <div id="cards-container" class="cards-grid">
+        <!--cards dynamiques-->
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+    
+</body>
+</html>
