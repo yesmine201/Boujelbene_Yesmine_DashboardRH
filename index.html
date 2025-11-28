@@ -6,6 +6,7 @@
   <title>Dashboard RH</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="NovaQuest.png" type="image/x-icon">
 </head>
 <body>
   <div class="container">
@@ -16,13 +17,13 @@
           <span class="titre"><h2>NovaQuest</h2></span>
         </li>
         <li>
-          <a href="#aperçu"><span>Page principale</span></a>
+          <a href="#apercu"><span>Page principale</span></a>
         </li>
         <li>
-          <a href="#employés">Employés</a>
+          <a href="#employes">Employés</a>
         </li>
         <li>
-          <a href="#congés">Congés</a>
+          <a href="#conges">Congés</a>
         </li>
         <li>
           <a href="#taches">Taches</a>
@@ -52,10 +53,53 @@
       <div id="cards-container" class="cards-grid">
         <!--cards dynamiques-->
       </div>
+      <section id="apercu" class="section">
+        <div class="charts-grid">
+          <div class="chart-box">
+            <canvas id="chart-apercu"></canvas>
+          </div>
+        </div>
+      </section>
+      <section id="employes" class="section">
+        <div class="charts-grid">
+          <div class="chart-box">
+            <canvas id="chart-employes"></canvas>
+          </div>
+        </div>
+      </section>
+      <section id="conges" class="section">
+        <div class="charts-grid">
+          <div class="chart-box">
+            <canvas id="chart-conges"></canvas>
+          </div>
+        </div>
+      </section>
+      <section id="taches" class="section">
+        <div class="charts-grid">
+          <div class="chart-box">
+            <canvas id="chart-taches"></canvas>
+          </div>
+        </div>
+      </section>
+      <section id="performance" class="section">
+        <div class="charts-grid">
+          <div class="chart-box">
+            <canvas id="chart-performance"></canvas>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
+  
+  
 
+  <script src="data.js"></script>
+    <!-- Chart.js UMD build -->
+  <script src="chart.umd.js"></script>
+
+  <!-- Ton script personnalisé -->
   <script src="script.js"></script>
+
     
 </body>
 </html>

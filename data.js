@@ -27,3 +27,4 @@ data.charts = {
     values: [85, 15]
   }
 };
+
