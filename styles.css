@@ -267,9 +267,92 @@ body{
 .chart-box:hover {
   transform: translateY(-4px);
 }
-.section{
+
+/* --- Cacher toutes les sections sauf celle active --- */
+.section {
   display: none;
 }
-.section.active{
+
+.section.active {
   display: block;
+}
+
+/* --- Navigation responsive (tablette + mobile) --- */
+@media (max-width: 992px) {
+
+  .navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px !important;
+    transform: translateX(-100%);
+    z-index: 2000;
+  }
+
+  .navigation.active {
+    transform: translateX(0);
+  }
+
+  .main {
+    width: 100% !important;
+    left: 0 !important;
+    padding: 20px 16px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .main.active {
+    margin-left: 250px;
+  }
+}
+
+/* --- Cards responsive grid --- */
+@media (max-width: 992px) {
+  .cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    gap: 1.2rem !important;
+  }
+}
+
+/* --- Charts responsive --- */
+.chart-box {
+  width: 100%;
+  max-width: 650px;
+}
+
+.chart-box canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* --- Telephone <= 480px --- */
+@media (max-width: 480px) {
+
+  .main {
+    padding: 12px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .header p {
+    font-size: 12px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .card p {
+    font-size: 1.4em;
+  }
+
+  .charts-grid {
+    padding: 0 !important;
+  }
 }
