@@ -6,6 +6,7 @@
   font-family: 'Poppins', sans-serif;
 }
 body{
+  margin: 0;
   overflow-x: hidden;
 }
 
@@ -159,6 +160,9 @@ body{
   left: 15px;
   top: 4px;
 }
+.search-bar .fa:hover{
+  color: #03a9f4;
+}
 .cards-grid{
   display: flex;
   flex-wrap: wrap;
@@ -187,5 +191,40 @@ body{
   font-size: 1.8em;
   font-weight: bold;
   color: #007bff;
+}
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.chart-box {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+.charts-grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+.chart-box {
+  flex: 1 1 450px;
+  max-width: 650px;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.chart-box:hover {
+  transform: translateY(-4px);
 }
 
