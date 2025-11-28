@@ -39,7 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         leaves: [
             { title: "Congés annuels", value: "20" },
-            { title: "Congés maladie", value: "5" }
+            { title: "Congés maladie", value: "5" },   
+            { title: "Congés parental", value: "3" },
+            { title: "Congés sans solde", value: "2" }
         ],
         tasks: [
             { title: "À faire", value: "10" },
