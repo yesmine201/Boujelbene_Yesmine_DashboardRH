@@ -1,8 +1,6 @@
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    /* ------------------------------
-       MENU BURGER
-    --------------------------------*/
     const toggle = document.querySelector('.menu-toggle');
     const navigation = document.querySelector('.navigation');
     const main = document.querySelector('.main');
@@ -14,9 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
         main.classList.toggle('active');
     }
 
-    toggle.addEventListener('click', toggleMenu);
     toggle.addEventListener('keydown', function (e) {
-        if (e.key === "Enter" || e.key === " ") {
+        if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             toggleMenu();
         }
@@ -59,9 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    /* ------------------------------
-       DONNÉES DES CARDS
-    --------------------------------*/
+    /* ---DONNÉES DES CARDS--- */
     const dataCards = {
         general: [
             { title: "Employés actifs", value: "120" },
@@ -75,9 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         leaves: [
             { title: "Congés annuels", value: "20" },
-            { title: "Congés maladie", value: "5" },   
-            { title: "Congés parental", value: "3" },
-            { title: "Congés sans solde", value: "2" }
+            { title: "Congés maladie", value: "5" }
         ],
         tasks: [
             { title: "À faire", value: "10" },
@@ -98,11 +91,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const sectionData = dataCards[section];
         if (!sectionData) return;
 
-        container.innerHTML = "";
+        container.innerHTML = '';
 
         sectionData.forEach(card => {
-            const el = document.createElement("div");
-            el.className = "card";
+            const el = document.createElement('div');
+            el.className = 'card';
             el.innerHTML = `<h3>${card.title}</h3><p>${card.value}</p>`;
             container.appendChild(el);
         });
