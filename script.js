@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     /* ------------------------------
-       MENU BURGER (mobile)
+       MENU BURGER
     --------------------------------*/
     const toggle = document.querySelector('.menu-toggle');
     const navigation = document.querySelector('.navigation');
@@ -14,14 +14,13 @@ document.addEventListener('DOMContentLoaded', function () {
         main.classList.toggle('active');
     }
 
+    toggle.addEventListener('click', toggleMenu);
     toggle.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             toggleMenu();
         }
     });
-
-    toggle.addEventListener('click', toggleMenu);
 
 
     /* ------------------------------
@@ -61,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const sectionData = dataCards[section];
         if (!sectionData) return;
 
-        container.innerHTML = '';
+        container.innerHTML = "";
 
         sectionData.forEach(card => {
-            const el = document.createElement('div');
-            el.className = 'card';
+            const el = document.createElement("div");
+            el.className = "card";
             el.innerHTML = `<h3>${card.title}</h3><p>${card.value}</p>`;
             container.appendChild(el);
         });
@@ -73,24 +72,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* ------------------------------
-       MAPPING NAVIGATION → SECTIONS
-    --------------------------------*/
-    const linkMap = {
-        '#apercu': 'general',
-        '#employes': 'employees',
-        '#conges': 'leaves',
-        '#taches': 'tasks',
-        '#performance': 'performance'
-    };
-
-
-    /* ------------------------------
-       AFFICHER UNIQUEMENT UNE SECTION
+       GESTION DES SECTIONS (1 seule visible)
     --------------------------------*/
     function showOnlySection(sectionId) {
-        document.querySelectorAll(".section").forEach(sec => {
-            sec.classList.remove("active");
-        });
+        document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
 
         const active = document.getElementById(sectionId);
         if (active) active.classList.add("active");
@@ -98,37 +83,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* ------------------------------
-       CHART.JS — CHARGEMENT DYNAMIQUE
+       CHART.JS : CHARGEMENT PAR SECTION
     --------------------------------*/
-    const chartData = data.charts;
-    let chartsInstances = {};
+    const chartData = data.charts; 
+    let currentChart = null;
 
     function loadChartForSection(sectionKey) {
 
         const chartMap = {
-            'general': ["chart-apercu", "aperçu"],
-            'employees': ["chart-employes", "employes"],
-            'leaves': ["chart-conges", "conges"],
-            'tasks': ["chart-taches", "taches"],
-            'performance': ["chart-performance", "performance"]
+            "general": ["chart-apercu", "apercu"],
+            "employees": ["chart-employes", "employes"],
+            "leaves": ["chart-conges", "conges"],
+            "tasks": ["chart-taches", "taches"],
+            "performance": ["chart-performance", "performance"]
         };
 
         const config = chartMap[sectionKey];
         if (!config) return;
 
         const [canvasId, chartKey] = config;
-        const chartInfo = chartData[chartKey];
         const canvas = document.getElementById(canvasId);
 
         if (!canvas) return;
 
-        // Supprimer ancienne chart
-        if (chartsInstances[canvasId]) {
-            chartsInstances[canvasId].destroy();
-        }
+        const chartInfo = chartData[chartKey];
 
-        // Créer la nouvelle chart
-        chartsInstances[canvasId] = new Chart(canvas, {
+        // détruire l'ancienne chart
+        if (currentChart) currentChart.destroy();
+
+        currentChart = new Chart(canvas, {
             type: chartInfo.type,
             data: {
                 labels: chartInfo.labels,
@@ -143,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { display: chartInfo.type !== 'bar' }
+                    legend: { display: chartInfo.type !== "bar" }
                 }
             }
         });
@@ -151,29 +134,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* ------------------------------
-       NAVIGATION : changer section + chart
+       NAVIGATION
     --------------------------------*/
-    document.querySelectorAll('.navigation a').forEach(a => {
-        a.addEventListener('click', function (e) {
+    const linkMap = {
+        "#apercu": "general",
+        "#employes": "employees",
+        "#conges": "leaves",
+        "#taches": "tasks",
+        "#performance": "performance"
+    };
+
+    document.querySelectorAll(".navigation a").forEach(a => {
+        a.addEventListener("click", function (e) {
             e.preventDefault();
 
-            const key = linkMap[this.getAttribute('href')];
-            const sectionId = this.getAttribute("href").replace("#", "");
+            const href = this.getAttribute("href");
+            const sectionKey = linkMap[href];
+            const sectionId = href.replace("#", "");
 
-            if (key) {
-                loadSection(key);                 // appliquer les cards
-                showOnlySection(sectionId);       // afficher la bonne section
-                loadChartForSection(key);         // afficher la bonne chart
+            if (sectionKey) {
+                loadSection(sectionKey);
+                showOnlySection(sectionId);
+                loadChartForSection(sectionKey);
             }
         });
     });
 
 
     /* ------------------------------
-       INITIALISATION AU CHARGEMENT
+       INITIALISATION
     --------------------------------*/
-    loadSection('general');
+    loadSection("general");
     showOnlySection("apercu");
-    loadChartForSection('general');
+    loadChartForSection("general");
 
 });

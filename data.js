@@ -1,7 +1,7 @@
 var data = data || {};
 
 data.charts = {
-  aperçu: {
+  apercu: {
     type: 'bar',
     labels: ["Employés actifs", "Congés en cours", "Tâches en retard", "Performance moyenne"],
     values: [120, 8, 5, 78]
