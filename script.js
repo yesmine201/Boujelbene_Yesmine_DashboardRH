@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleMenu();
         }
     });
+    toggle.addEventListener('click', toggleMenu);
 
 
     /* ------------------------------------------------------------
