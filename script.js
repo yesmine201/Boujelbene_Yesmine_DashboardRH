@@ -1,99 +1,71 @@
-
+/* Charger le document HTML avant l'exécution */
 document.addEventListener('DOMContentLoaded', function () {
 
+    /*SÉLECTION DES ÉLÉMENTS*/
     const toggle = document.querySelector('.menu-toggle');
     const navigation = document.querySelector('.navigation');
     const main = document.querySelector('.main');
     const container = document.getElementById('cards-container');
 
+    /*MENU RESPONSIVE*/
     function toggleMenu() {
         toggle.classList.toggle('active');
         navigation.classList.toggle('active');
         main.classList.toggle('active');
     }
 
-    toggle.addEventListener('keydown', function (e) {
+    toggle.addEventListener('click', toggleMenu);
+    toggle.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             toggleMenu();
         }
     });
 
+    /*CALCULS À PARTIR DE data.js*/
 
-    /* ------------------------------------------------------------
-       🔵 FONCTIONS POUR LES CARDS DE DÉPARTEMENTS (NOUVEAU)
-       Utilise les données REELLES provenant de data.js
-    -------------------------------------------------------------*/
-
-    function displayDepartementCards(dep) {
-        const labels = data.charts.employes.labels;   // noms des départements
-        const values = data.charts.employes.values;   // nombre d’employés
-
-        container.innerHTML = "";
-
-        // Si "Tous les départements" => afficher toutes les cards
-        if (dep === "") {
-            labels.forEach((d, index) => {
-                const count = values[index];
-                const el = document.createElement("div");
-                el.className = "card";
-                el.innerHTML = `<h3>${d}</h3><p>${count} employés</p>`;
-                container.appendChild(el);
-            });
-            return;
-        }
-
-        // Sinon afficher UNE seule card du département choisi
-        const index = labels.indexOf(dep);
-        if (index !== -1) {
-            const count = values[index];
-            const el = document.createElement("div");
-            el.className = "card";
-            el.innerHTML = `<h3>${dep}</h3><p>${count} employés</p>`;
-            container.appendChild(el);
-        }
+    function getOverviewCards() {
+        return data.charts.apercu.labels.map((label, i) => ({
+            title: label,
+            value: data.charts.apercu.values[i] +
+                (label.includes("Performance") ? "%" : "")
+        }));
     }
 
+    function getEmployeesStats() {
+        const values = data.charts.employes.values;
+        return {
+            totalEmployes: values.reduce((a, b) => a + b, 0),
+            nbDepartements: values.length
+        };
+    }
 
+    function getLeavesStats() {
+        return data.charts.conges.labels.map((label, i) => ({
+            title: "Congés " + label,
+            value: data.charts.conges.values[i]
+        }));
+    }
 
-    /* ---DONNÉES DES CARDS--- */
-    const dataCards = {
-        general: [
-            { title: "Employés actifs", value: "120" },
-            { title: "Congés en cours", value: "8" },
-            { title: "Tâches en retard", value: "5" },
-            { title: "Performance moyenne", value: "78%" }
-        ],
-        employees: [
-            { title: "Total employés", value: "120" },
-            { title: "Départements", value: "6" }
-        ],
-        leaves: [
-            { title: "Congés annuels", value: "20" },
-            { title: "Congés maladie", value: "5" }
-        ],
-        tasks: [
-            { title: "À faire", value: "10" },
-            { title: "En cours", value: "25" },
-            { title: "Terminées", value: "45" }
-        ],
-        performance: [
-            { title: "Objectifs atteints", value: "85%" },
-            { title: "Objectifs non atteints", value: "15%" }
-        ]
-    };
+    function getTasksStats() {
+        return data.charts.taches.labels.map((label, i) => ({
+            title: label,
+            value: data.charts.taches.values[i]
+        }));
+    }
 
+    function getPerformanceStats() {
+        return data.charts.performance.labels.map((label, i) => ({
+            title: label,
+            value: data.charts.performance.values[i] + "%"
+        }));
+    }
 
-    /* ------------------------------
-       CHARGEMENT DES CARDS NORMALES
-    --------------------------------*/
-    function loadSection(section) {
-        const sectionData = dataCards[section];
-        if (!sectionData) return;
+    /*AFFICHAGE DES CARDS*/
 
+    function renderCards(cards) {
         container.innerHTML = '';
-
-        sectionData.forEach(card => {
+        cards.forEach(card => {
             const el = document.createElement('div');
             el.className = 'card';
             el.innerHTML = `<h3>${card.title}</h3><p>${card.value}</p>`;
@@ -101,31 +73,35 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    /*CARDS PAR DÉPARTEMENT*/
+    function displayDepartementCards(dep) {
+        const labels = data.charts.employes.labels;
+        const values = data.charts.employes.values;
 
-    /* ------------------------------
-       GESTION DES SECTIONS
-    --------------------------------*/
-    function showOnlySection(sectionId) {
-        document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
-        const active = document.getElementById(sectionId);
-        if (active) active.classList.add("active");
+        container.innerHTML = '';
+
+        labels.forEach((d, i) => {
+            if (dep === "" || dep === d) {
+                const el = document.createElement('div');
+                el.className = 'card';
+                el.innerHTML = `<h3>${d}</h3><p>${values[i]} employés</p>`;
+                container.appendChild(el);
+            }
+        });
     }
 
+    /*CHART.JS*/
 
-    /* ------------------------------
-       CHART.JS : SECTION PAR SECTION
-    --------------------------------*/
-    const chartData = data.charts; 
     let currentChart = null;
 
     function loadChartForSection(sectionKey) {
 
         const chartMap = {
-            "general": ["chart-apercu", "apercu"],
-            "employees": ["chart-employes", "employes"],
-            "leaves": ["chart-conges", "conges"],
-            "tasks": ["chart-taches", "taches"],
-            "performance": ["chart-performance", "performance"]
+            general: ["chart-apercu", "apercu"],
+            employees: ["chart-employes", "employes"],
+            leaves: ["chart-conges", "conges"],
+            tasks: ["chart-taches", "taches"],
+            performance: ["chart-performance", "performance"]
         };
 
         const config = chartMap[sectionKey];
@@ -135,9 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const canvas = document.getElementById(canvasId);
         if (!canvas) return;
 
-        const chartInfo = chartData[chartKey];
-
         if (currentChart) currentChart.destroy();
+
+        const chartInfo = data.charts[chartKey];
 
         currentChart = new Chart(canvas, {
             type: chartInfo.type,
@@ -160,10 +136,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    /*NAVIGATION*/
 
-    /* ------------------------------
-       NAVIGATION + FILTRE
-    --------------------------------*/
+    function showOnlySection(sectionId) {
+        document.querySelectorAll(".section")
+            .forEach(sec => sec.classList.remove("active"));
+
+        const active = document.getElementById(sectionId);
+        if (active) active.classList.add("active");
+    }
+
     const linkMap = {
         "#apercu": "general",
         "#employes": "employees",
@@ -173,35 +155,40 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     document.querySelectorAll(".navigation a").forEach(a => {
-        a.addEventListener("click", function (e) {
+        a.addEventListener("click", e => {
             e.preventDefault();
 
-            const href = this.getAttribute("href");
+            const href = a.getAttribute("href");
             const sectionKey = linkMap[href];
             const sectionId = href.replace("#", "");
 
-            if (sectionKey) {
-                loadSection(sectionKey);
-                showOnlySection(sectionId);
-                loadChartForSection(sectionKey);
+            showOnlySection(sectionId);
+            loadChartForSection(sectionKey);
 
-                //  Spécial : Section Employés => appliquer filtrage
-                if (sectionKey === "employees") {
+            switch (sectionKey) {
+                case "general":
+                    renderCards(getOverviewCards());
+                    break;
+                case "employees":
                     const depFilter = document.getElementById("poste-filter");
-                    if (depFilter) {
-                        displayDepartementCards(depFilter.value);
-                    }
-                }
+                    displayDepartementCards(depFilter ? depFilter.value : "");
+                    break;
+                case "leaves":
+                    renderCards(getLeavesStats());
+                    break;
+                case "tasks":
+                    renderCards(getTasksStats());
+                    break;
+                case "performance":
+                    renderCards(getPerformanceStats());
+                    break;
             }
         });
     });
 
+    /*FILTRE DÉPARTEMENT*/
 
-    /* ------------------------------
-       FILTRE PAR DÉPARTEMENT
-    --------------------------------*/
     const depFilter = document.getElementById("poste-filter");
-
     if (depFilter) {
         depFilter.addEventListener("change", function () {
             if (document.getElementById("employes").classList.contains("active")) {
@@ -210,12 +197,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    /*INITIALISATION*/
 
-    /* ------------------------------
-       INITIALISATION
-    --------------------------------*/
-    loadSection("general");
     showOnlySection("apercu");
+    renderCards(getOverviewCards());
     loadChartForSection("general");
 
 });
